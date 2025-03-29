@@ -1,0 +1,189 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  color: white;
+}
+h1,
+h2,
+p,
+/* span, */
+input,
+label,
+textarea,
+.ant-typography,
+.ant-select-selector,
+.ant-card-head-title,
+.ant-statistic-title,
+.ant-statistic-content-value-int,
+.ant-descriptions-item-label,
+.ant-input-affix-wrapper,
+.ant-layout-content,
+/* .ant-menu-submenu-title,
+.ant-menu-item, */
+/* .ant-menu-item-only-child, */
+/* .ant-menu-submenu-arrow, */
+.ant-picker {
+  color: white !important;
+  background-color: transparent !important;
+}
+
+/* ::placeholder { color: red !important; } */
+
+/* .ant-select-selector,
+.ant-picker */
+.ant-pagination-item-link,
+.anticon-close {
+  color: white !important;
+}
+.ant-select-selection-overflow-item {
+  /* color: white; */
+  border: 1px solid white;
+  border-radius: 20px;
+  margin: 5px 5px;
+}
+.ant-select-selection-overflow-item-suffix {
+  border: none;
+  border-radius: none;
+}
+/* .ant-select-selection-item-content {
+  color: black;
+  border: 1px solid white;
+  border-radius: 20px;
+  padding: 0px 10px;
+} */
+a,
+input::placeholder,
+.ant-input-clear-icon,
+.ant-select-arrow,
+.ant-pagination-item-ellipsis,
+.ant-descriptions-item-content,
+.ant-select-selection-placeholder {
+  color: grey !important;
+}
+a {
+  text-decoration: none;
+}
+
+.youtube_live {
+  /* border: 1px solid blue; */
+  width: 100%;
+  height: 100%;
+}
+
+::-webkit-scrollbar {
+  width: 4px;
+  display: flex;
+}
+::-webkit-scrollbar-thumb {
+  height: 160px;
+  background: white;
+  border-radius: 4.5px;
+}
+
+.toolbar-wrapper {
+  position: fixed;
+  bottom: 32px;
+  left: 50%;
+  padding: 0px 24px;
+  color: #fff;
+  font-size: 20px;
+  background-color: rgba(0, 0, 0, 0.1);
+  border-radius: 100px;
+  transform: translateX(-50%);
+}
+
+.toolbar-wrapper .anticon {
+  padding: 12px;
+  cursor: pointer;
+}
+
+.toolbar-wrapper .anticon[disabled] {
+  cursor: not-allowed;
+  opacity: 0.3;
+}
+
+.toolbar-wrapper .anticon:hover {
+  opacity: 0.3;
+}
+
+.ant-menu-item-selected {
+  background-color: #e6f4ff !important;
+  color: #78b2ff !important;
+  border-bottom: 1px solid #1677ff;
+}
+
+.ant-menu-item-selected,
+.ant-menu-submenu-selected {
+  color: #78b2ff !important;
+  /* border-bottom: 1px solid #1677ff; */
+}
+
+.ant-menu-sub {
+  background-color: transparent !important;
+  border-bottom: 0px;
+  color: #78b2ff !important;
+}
+
+@media (max-width: 767px) {
+  .ant-menu-sub {
+    background-color: #001529 !important;
+    border-bottom: 1px solid #1677ff;
+    color: #78b2ff !important;
+  }
+}
+
+.ant-menu-submenu .ant-menu-submenu-vertical {
+  /* background-color: red !important; */
+  /* color: #78B2FF !important; */
+}
+
+.ant-menu-item-only-child {
+  /* background-color: red; */
+  /* color: #78B2FF !important; */
+}
+
+.table2 {
+  border: "10px solid blue";
+}
+
+/* Override default text color for leadership pages */
+[class*="leadership"] {
+  color: rgba(0, 0, 0, 0.88);
+}
+
+/* Ensure Ant Design components in leadership pages have proper text color */
+[class*="leadership"] .ant-typography,
+[class*="leadership"] .ant-table,
+[class*="leadership"] .ant-form-item-label > label,
+[class*="leadership"] .ant-select-selection-item,
+[class*="leadership"] .ant-card,
+[class*="leadership"] .ant-tabs,
+[class*="leadership"] .ant-modal-content {
+  color: rgba(0, 0, 0, 0.88);
+}
+
+[class*="leadership"] .ant-btn-link {
+  color: #1677ff;
+}
+
+[class*="leadership"] .ant-btn-link.ant-btn-dangerous {
+  color: #ff4d4f;
+}
+
+.ant-card {
+  /* For Webkit browsers (Chrome, Safari) */
+  ::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background-color: #d9d9d9; /* Ant Design's default gray color */
+    border-radius: 3px;
+  }
+
+  /* For Firefox */
+  scrollbar-width: thin;
+  scrollbar-color: #d9d9d9 transparent;
+}

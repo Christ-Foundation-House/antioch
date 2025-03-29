@@ -1,0 +1,726 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider          = "mysql"
+  url               = env("DATABASE_URL")
+  shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
+}
+
+model wicf_member {
+  id                                   Int       @id @default(autoincrement())
+  first_name                           String
+  last_name                            String
+  nationality                          String?
+  occupation                           String?
+  university                           String?
+  university_campus                    String?
+  phone_number                         String    @unique
+  email                                String?
+  wechat_id                            String?
+  is_requesting_salvation_rededication Boolean?
+  ministry_of_interest                 String?
+  is_requesting_prayer                 Boolean?
+  suggestion_prayer_request            String?
+  birthday                             DateTime?
+  marital_status                       String?
+  is_in_china                          Boolean?
+  start_time                           DateTime?
+  completion_time                      DateTime?
+  last_updated_time                    DateTime? @default(now())
+  registration_start_time              DateTime?
+  registration_last_update_time        DateTime?
+  registration_completion_time         DateTime?
+  registration_last_step               String?
+  registration_email_sent              DateTime?
+  gender                               String?
+  graduation_date                      DateTime?
+  leaving_date                         DateTime?
+  study_level                          String?
+  study_major                          String?
+  work_place                           String?
+  work_type                            String?
+  address                              String?
+  ministries_involved                  String?
+  wicf_membership_self                 String?
+  is_born_again                        Boolean?
+  is_a_believer_in_jesus_christ        Boolean?
+  province                             String?
+  city                                 String?
+  denomination                         String?
+  passport_number                      String?
+  visa_expiry_date                     DateTime?
+  bible_study_group                    String?
+  china_arrival_date                   DateTime?
+  is_baptised                          Boolean?
+  whatsapp_number                      String?
+  is_new_member                        Boolean?
+  is_new_member_acknowledged           Boolean?
+
+  logs                 wicf_member_logs[]
+  logs_dump            wicf_member_logs_dump[]
+  wicf_members_worship wicf_member_worship[]
+  // user                 user[]
+
+  user_id String? @unique
+  user    user?   @relation(fields: [user_id], references: [id], onDelete: Cascade)
+
+  // @@unique([id, phone_number])
+}
+
+model wicf_member_logs_dump {
+  log_id   Int      @id @default(autoincrement())
+  log_time DateTime @default(now())
+
+  wicf_member_id Int
+  data           String?      @db.LongText
+  wicf_member    wicf_member? @relation(fields: [wicf_member_id], references: [id], onDelete: Cascade)
+}
+
+model stats {
+  id                   Int  @id @unique
+  year                 Int
+  month                Int
+  count_new_members    Int
+  count_members        Int
+  count_feedback       Int
+  count_prayer_request Int
+  count_report         Int?
+}
+
+model notifications {
+  id        Int      @id @default(autoincrement())
+  timestamp DateTime @default(now())
+
+  topic   String
+  title   String
+  message String
+
+  is_seen Boolean?
+
+  from_user_id String?
+  to_user_ids  user[]
+
+  // users_involved user[]
+}
+
+model wicf_member_logs {
+  log_id   Int      @id @default(autoincrement())
+  log_time DateTime @default(now())
+
+  id                                   Int
+  first_name                           String?
+  last_name                            String?
+  nationality                          String?
+  occupation                           String?
+  university                           String?
+  university_campus                    String?
+  phone_number                         String?
+  email                                String?
+  wechat_id                            String?
+  is_requesting_salvation_rededication Boolean?
+  ministry_of_interest                 String?
+  is_requesting_prayer                 Boolean?
+  suggestion_prayer_request            String?
+  birthday                             DateTime?
+  marital_status                       String?
+  is_in_china                          Boolean?
+  start_time                           DateTime?
+  completion_time                      DateTime?
+  last_updated_time                    DateTime?
+
+  wicf_member wicf_member? @relation(fields: [id], references: [id], onDelete: Cascade)
+}
+
+model wicf_member_worship {
+  id             Int @id @default(autoincrement())
+  wicf_member_id Int @unique
+
+  joined_date DateTime @default(now())
+
+  is_vocalist                     Boolean?
+  is_instrumentalist              Boolean?
+  is_born_again                   Boolean?
+  is_baptized                     Boolean?
+  has_completed_workers_training  Boolean?
+  reason_for_joining              String?
+  has_music_theory                Boolean?
+  has_practice_schedule           Boolean?
+  has_approach_for_learning_songs Boolean?
+  approach_for_learning_songs     String?
+  music_listening_frequency       String?
+  has_vocal_exercises             Boolean?
+  vocal_exercises_frequency       String?
+  is_praying_for_choir            Boolean?
+
+  confortable_harmony             String?
+  vocal_range                     String?
+  define_background_vocal         String?
+  define_worship_leader           String?
+  define_worship                  String?
+  define_worshipper               String?
+  struggle_in_choir               String?
+  instruments_able_to_play        String?
+  instruments_able_to_play_level  String?
+  knows_instruments_roles_in_band Boolean?
+  knows_number_system             Boolean?
+  work_ethic_with_others          String?
+  is_regular_workshop_willing     Boolean?
+  choir_improvement_request       String?
+
+  wicf_member wicf_member? @relation(fields: [wicf_member_id], references: [id], onDelete: Cascade)
+}
+
+model wicf_form_summerfest {
+  id                   Int       @id @default(autoincrement())
+  first_name           String
+  last_name            String
+  nationality          String
+  phone_number         String
+  passport_number      String
+  passport_expiry_date DateTime
+  completion_time      DateTime?
+}
+
+model wicf_form_workers_training {
+  id                      Int       @id @default(autoincrement())
+  first_name              String
+  last_name               String
+  phone_number            String
+  is_born_again           String
+  wicf_joining_year       String
+  ministry                String
+  commitment_to_attending String
+  completion_time         DateTime?
+  possible_departure_year String?
+}
+
+model wicf_form_academic_summit {
+  id              Int       @id @default(autoincrement())
+  full_name       String
+  completion_time DateTime?
+}
+
+model wicf_form_feedback {
+  id              Int       @id @default(autoincrement())
+  name            String?
+  message         String    @db.Text
+  contact         String?
+  completion_time DateTime?
+  is_addressed    Boolean?
+  is_seen         Boolean?
+  userId          String?
+  user            user?     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model wicf_prayer_request {
+  id                 Int       @id @default(autoincrement())
+  request            String    @db.Text
+  name               String?
+  contact_info       String?   @db.Text
+  completion_time    DateTime? @default(now())
+  is_addressed       DateTime?
+  userId_assigned_to String?
+  userId             String?
+  user               user?     @relation(name: "user_prayer_request", fields: [userId], references: [id], onDelete: Cascade)
+  user_assigned_to   user?     @relation(name: "prayer_request_assigned_to", fields: [userId_assigned_to], references: [id], onDelete: Cascade)
+}
+
+model session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         user     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+model user {
+  id String @id @default(cuid())
+  // wicf_member_id Int?   @unique
+
+  name                  String?
+  first_name            String?
+  last_name             String?
+  email                 String        @unique
+  emailVerified         DateTime?
+  phone_number          String?       @unique
+  phone_number_verified DateTime?
+  image                 String?
+  accounts              account[]
+  sessions              session[]
+  streams               stream[]
+  locations             location[]
+  photos_info           photos_info[]
+  password              String?
+  is_verified           Boolean?
+  is_banned             Boolean?
+  created_at            DateTime?     @default(now())
+  password_change_at    DateTime?
+
+  roles                           role[]                @relation("user_role")
+  wicf_member                     wicf_member?
+  wicf_form_feedback              wicf_form_feedback[]
+  wicf_prayer_request             wicf_prayer_request[] @relation(name: "user_prayer_request")
+  wicf_prayer_request_assigned_to wicf_prayer_request[] @relation(name: "prayer_request_assigned_to")
+  posts                           Post[]
+  notifications                   notifications[]
+  links                           link[]
+  reports                         report[]
+  emails_sent                     emails_sent[]
+  forms                           form[]
+  forms_admin_of                  form[]                @relation("form_admins")
+  qa_answers                      qa_answer[]
+  chats_particiated               chat[]                @relation("chats_particiated")
+  chats_created                   chat[]                @relation("chats_created")
+  chat_admins                     chat[]                @relation("chat_admins")
+  chat_messages                   chat_message[]
+
+  // Leadership Relations
+  ministry_memberships               ministry_member[]
+  leadership_appointments            leadership_appointment[]
+  leadership_appointment_change_logs leadership_appointment_change_log[]
+
+  // wicf_member wicf_member? @relation(fields: [wicf_member_id], references: [id], onDelete: Cascade)
+  // wicf_member wicf_member? @relation(fields: [wicf_member_id, phone_number], references: [id, phone_number], onDelete: Cascade)
+}
+
+model account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  // providerAccountId  Int
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user user @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model stream {
+  id          Int       @id @default(autoincrement())
+  title       String
+  description String
+  status      String?
+  views       String?
+  password    String?
+  start_time  DateTime? @default(now())
+  end_time    DateTime?
+  notice      String?
+  links       String?
+  deleted     DateTime?
+
+  user_id String?
+
+  lives live[]
+
+  user user? @relation(fields: [user_id], references: [id], onDelete: Cascade)
+}
+
+model live {
+  id        Int       @id
+  stream_id Int?
+  date      DateTime?
+
+  stream stream? @relation(fields: [stream_id], references: [id], onDelete: Cascade)
+}
+
+model role {
+  id          Int           @id @default(autoincrement())
+  name        String        @unique
+  label       String?
+  users       user[]        @relation("user_role")
+  routes      route[]       @relation("role_route")
+  photos_info photos_info[] @relation("role_photos_info")
+}
+
+model route {
+  id    Int    @id @default(autoincrement())
+  url   String @unique
+  roles role[] @relation("role_route")
+}
+
+model location {
+  id           Int      @id @default(autoincrement())
+  title        String
+  location     String
+  time         String
+  user_id      String
+  last_updated DateTime @default(now())
+  user         user     @relation(fields: [user_id], references: [id], onDelete: Cascade)
+}
+
+model bb_user {
+  id                   Int      @id @default(autoincrement())
+  first_name           String
+  last_name            String?
+  institution          String?
+  is_sortable          Boolean?
+  shirt_size           String?
+  bb_team_id           Int?
+  bb_team              bb_team? @relation(fields: [bb_team_id], references: [id])
+  bb_year              Int?
+  is_paid_registration Boolean?
+  created_at           DateTime @default(now())
+}
+
+model bb_team {
+  id           Int           @id @default(autoincrement())
+  name         String
+  password     String
+  color_hex    String?
+  members      bb_user[]
+  bb_questions bb_question[]
+}
+
+model bb_question {
+  id        Int      @id @default(autoincrement())
+  question  String   @db.Text
+  answer    String   @db.Text
+  bb_teamId Int?
+  bb_team   bb_team? @relation(fields: [bb_teamId], references: [id])
+}
+
+model photos_info {
+  id           Int      @id @default(autoincrement())
+  title        String
+  description  String
+  date_updated DateTime @default(now())
+  user_id      String
+
+  admin_roles role[] @relation("role_photos_info")
+  user        user   @relation(fields: [user_id], references: [id], onDelete: Cascade)
+}
+
+model photos_album {
+  id                             Int       @id @default(autoincrement())
+  album_key                      String    @unique
+  thumbnail_url                  String
+  image_url_array                String    @db.LongText()
+  image_url_count                Int?
+  image_url_array_hidden         String?   @db.LongText()
+  image_url_array_dont_thumbnail String?   @db.LongText()
+  is_public                      Boolean?  @default(false)
+  title                          String?
+  date                           DateTime?
+  description                    String?   @db.LongText()
+  views                          Int       @default(0)
+  thumbnail_url_array            String?   @db.LongText()
+  thumbnail_url_count            Int?
+  image_object_array             String?   @db.LongText()
+}
+
+model Post {
+  id        Int      @id @default(autoincrement())
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  createdBy   user   @relation(fields: [createdById], references: [id])
+  createdById String
+
+  @@index([name])
+}
+
+model link {
+  id          Int       @id @default(autoincrement())
+  url         String    @unique
+  label       String    @unique
+  updated_at  DateTime  @default(now())
+  user_id     String
+  image_url   String?   @db.LongText()
+  deleted_at  DateTime?
+  description String?   @db.LongText()
+
+  user user @relation(fields: [user_id], references: [id], onDelete: Cascade)
+}
+
+model report {
+  id          Int     @id @default(autoincrement())
+  description String  @db.LongText()
+  email       String
+  name        String?
+  title       String?
+  type        String?
+  url         String? @db.LongText()
+  base_url    String?
+  user_id     String?
+
+  is_addressed      DateTime?
+  is_closed_by_user DateTime?
+  created_at        DateTime  @default(now())
+  updated_at        DateTime  @default(now())
+  deleted_at        DateTime?
+
+  user user? @relation(fields: [user_id], references: [id], onDelete: Cascade)
+}
+
+model emails_sent {
+  id            Int      @id @default(autoincrement())
+  to            String?
+  subject       String?
+  text          String?  @db.LongText()
+  html          String?  @db.LongText()
+  is_successful Boolean?
+  error         String?  @db.LongText()
+  user_id       String?
+  domain        String?
+  user          user?    @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  created_at    DateTime @default(now())
+}
+
+model form {
+  id          String            @id @default(cuid())
+  title       String
+  created_at  DateTime          @default(now())
+  updated_at  DateTime          @updatedAt
+  user_id     String
+  is_deleted  Boolean?          @default(false)
+  fields      form_field[]
+  submissions form_submission[]
+  user        user?             @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  form_admins user[]            @relation("form_admins")
+}
+
+model form_field {
+  id        String          @id @default(cuid())
+  label     String
+  type      form_field_type
+  order     Int             @unique
+  form_id   String
+  form      form            @relation(fields: [form_id], references: [id], onDelete: Cascade)
+  options   form_option[]
+  responses form_response[]
+}
+
+model form_option {
+  id       String     @id @default(cuid())
+  value    String
+  field_id String
+  field    form_field @relation(fields: [field_id], references: [id], onDelete: Cascade)
+}
+
+model form_submission {
+  id         String          @id @default(cuid())
+  form_id    String
+  form       form            @relation(fields: [form_id], references: [id], onDelete: Cascade)
+  created_at DateTime        @default(now())
+  responses  form_response[]
+}
+
+model form_response {
+  id            String          @id @default(cuid())
+  value         String
+  field_id      String
+  field         form_field      @relation(fields: [field_id], references: [id], onDelete: Cascade)
+  submission_id String
+  submission    form_submission @relation(fields: [submission_id], references: [id], onDelete: Cascade)
+}
+
+enum form_field_type {
+  TEXT
+  NUMBER
+  EMAIL
+  DATE
+  SELECT
+}
+
+model academic_summit_questions {
+  id           Int      @id @default(autoincrement())
+  full_name    String
+  topic        String?
+  question     String   @db.Text
+  answer       String?  @db.Text
+  created_at   DateTime @default(now())
+  is_addressed Boolean  @default(false)
+}
+
+model qa_domain {
+  id      Int     @id @default(autoincrement())
+  name    String  @unique
+  Label   String
+  is_open Boolean @default(true)
+}
+
+model qa_topic {
+  id      Int     @id @default(autoincrement())
+  name    String  @unique
+  Label   String
+  is_open Boolean @default(true)
+
+  qa_questions qa_question[]
+}
+
+model qa_question {
+  id          Int @id @default(autoincrement())
+  qa_topic_id Int
+
+  full_name    String
+  subject      String?
+  question     String   @db.Text
+  created_at   DateTime @default(now())
+  is_addressed Boolean  @default(false)
+
+  qa_answers qa_answer[]
+  qa_topic   qa_topic    @relation(fields: [qa_topic_id], references: [id], onDelete: Cascade)
+}
+
+model qa_answer {
+  id      Int    @id @default(autoincrement())
+  answer  String @db.Text
+  user_id String
+
+  qa_questions qa_question[]
+  user         user          @relation(fields: [user_id], references: [id], onDelete: Cascade)
+}
+
+model chat {
+  id              String         @id @default(cuid())
+  created_at      DateTime       @default(now())
+  creater_user_id String
+  messages        chat_message[]
+  admins          user[]         @relation("chat_admins")
+  participants    user[]         @relation("chats_particiated")
+  creater_user    user           @relation(name: "chats_created", fields: [creater_user_id], references: [id], onDelete: Cascade)
+  is_banned       DateTime?
+  is_closed       DateTime?
+}
+
+model chat_message {
+  id         Int      @id @default(autoincrement())
+  chat_id    String
+  user_id    String
+  message    String
+  created_at DateTime @default(now())
+  user       user     @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  chat       chat     @relation(fields: [chat_id], references: [id], onDelete: Cascade)
+}
+
+model leadership_tenure {
+  id                        String                      @id @default(cuid())
+  label                     String
+  name                      String                      @unique
+  start_date                DateTime
+  end_date                  DateTime
+  description               String?                     @db.Text
+  created_at                DateTime                    @default(now())
+  updated_at                DateTime                    @updatedAt
+  group_photo_url           String?
+  leadership_tenure_current leadership_tenure_current[]
+  // Relations
+  appointments              leadership_appointment[]
+}
+
+model leadership_tenure_current {
+  id        String            @id @default(cuid())
+  tenure_id String
+  tenure    leadership_tenure @relation(fields: [tenure_id], references: [id], onDelete: Cascade)
+}
+
+model ministry {
+  id          String   @id @default(cuid())
+  label       String
+  name        String   @unique
+  description String?  @db.Text
+  created_at  DateTime @default(now())
+  updated_at  DateTime @updatedAt
+
+  // Relations
+  positions leadership_position[]
+  members   ministry_member[]
+}
+
+model ministry_member {
+  id          Int      @id @default(autoincrement())
+  ministry_id String
+  user_id     String
+  joined_at   DateTime @default(now())
+
+  // Relations
+  ministry ministry @relation(fields: [ministry_id], references: [id], onDelete: Cascade)
+  user     user     @relation(fields: [user_id], references: [id], onDelete: Cascade)
+
+  @@unique([ministry_id, user_id])
+}
+
+enum leadership_position_type {
+  PRESIDENT
+  SECRETARY
+  TREASURER
+  LEADER_OF_MEN_MINISTRY
+  LEADER_OF_WOMEN_MINISTRY
+  LEADER_OF_MEDIA_MINISTRY
+  LEADER_OF_PRAYER_MINISTRY
+  LEADER_OF_WORSHIP_MINISTRY
+  LEADER_OF_EVANGELISM_MINISTRY
+  LEADER_OF_DISCIPLESHIP_MINISTRY
+  LEADER_OF_BIBLE_STUDY_MINISTRY
+  LEADER_OF_ORGANIZING_MINISTRY
+}
+
+model leadership_position {
+  id          String   @id @default(cuid())
+  label       String
+  name        String   @unique
+  description String?  @db.Text
+  ministry_id String? // Optional as some positions might not be tied to a ministry
+  created_at  DateTime @default(now())
+  updated_at  DateTime @updatedAt
+
+  leadership_type leadership_position_type? @unique
+
+  // Relations
+  ministry     ministry?                @relation(fields: [ministry_id], references: [id], onDelete: SetNull)
+  appointments leadership_appointment[]
+}
+
+model leadership_appointment_change_log {
+  id        String @id @default(cuid())
+  dump_from String
+  dump_to   String
+  user_id   String
+  user      user   @relation(fields: [user_id], references: [id], onDelete: Cascade)
+
+  created_at DateTime @default(now())
+}
+
+model leadership_appointment {
+  id                 String    @id @default(cuid())
+  tenure_id          String
+  position_id        String
+  tenure_position_id String    @unique
+  user_id            String
+  start_date         DateTime // Can be different from tenure dates for mid-term appointments
+  end_date           DateTime?
+  status             String // "active", "completed", "terminated"
+  created_at         DateTime  @default(now())
+  updated_at         DateTime  @updatedAt
+  is_notified        DateTime?
+  is_accepted        DateTime?
+
+  // Relations
+  tenure   leadership_tenure   @relation(fields: [tenure_id], references: [id], onDelete: Cascade)
+  position leadership_position @relation(fields: [position_id], references: [id], onDelete: Cascade)
+  user     user                @relation(fields: [user_id], references: [id], onDelete: Cascade)
+
+  @@unique([tenure_id, position_id, user_id])
+}
