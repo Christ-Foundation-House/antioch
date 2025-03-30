@@ -5,7 +5,7 @@ import { createTRPCRouter, protectedProcedure, publicProcedure } from '@/server/
 export const postRouter = createTRPCRouter({
   hello: publicProcedure.input(z.object({ text: z.string(), somethingelse: z.string() })).query(({ input }) => {
     return {
-      greeting: `Hello ${input.text}`,
+      greeting: `Paul Says Hello ${input.text}`,
     }
   }),
 
